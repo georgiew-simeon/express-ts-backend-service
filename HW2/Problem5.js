@@ -1,17 +1,13 @@
-// Създайте функция customReduce, 
-// която приема масив, функция за обратно извикване и начална стойност като аргументи 
-// и връща една стойност, получена чрез натрупване на резултата от извикването на функцията за обратно извикване за всеки елемент на масива.
-let arr = [1,2,3,4,5];
-
-function recFun(){
-    // Bottom of reccursion
-    if(array[i]=== null){
-        return;
-    }else{
-        recFun();
-    }
+function customReduce(arr, initialValue, reducer) {
+  return reducer(arr, initialValue);
 }
 
-function customReduce(arr, recFun, initialValue){
+function reducer(arr, initialValue) {
+  let summ = 0;
+  arr.forEach((element) => {
+    summ += element + initialValue;
+  });
 
+  return summ;
 }
+console.log(customReduce([1,2,3], 1, reducer));

@@ -1,18 +1,11 @@
-// Напишете функция counter, която връща функция. 
-// Върнатата функция трябва да увелиява променлива брояч на всяко извикване.
-// >> let x = counter(); console.log(x()) console.log(x()) console.log(x())
-// << 1, 2, 3
-
-function counter(){
-    function tmp(){
-
-    }
-
-
-    return tmp();
+function counter() {
+    let y = 0;
+  return function incrementedCounter() {
+    return (y += 1);
+  };
 }
+const myCounter = counter();
 
-let x = counter();
-console.log(x());
-console.log(x());
-console.log(x());
+console.log(myCounter());
+console.log(myCounter());
+console.log(myCounter());

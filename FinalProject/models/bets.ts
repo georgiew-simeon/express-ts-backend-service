@@ -1,3 +1,4 @@
+// models/bets.ts
 export interface Bets {
   id: number;
   event: string;
@@ -8,4 +9,3 @@ export interface Bets {
     loose: number;
   };
 }
-// Example of a DTO(model)

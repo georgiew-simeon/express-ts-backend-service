@@ -1,3 +1,4 @@
+// controllers/betsController.ts
 import { Request, Response } from "express";
 import { Bets } from "../models/bets";
 import BettingService from "../services/bettingService";

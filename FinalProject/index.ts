@@ -1,3 +1,4 @@
+// server.ts
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import bodyParser from "body-parser";
@@ -16,20 +17,21 @@ app.use(basicAuth);
 // Routes
 app.use("/bets", betRoutes);
 app.get('/test', (req: Request, res: Response) => {
-    res.json({ message: 'API works' })
+    res.json({ message: 'API works' });
 });
 
+// 404 Handler
 app.use((req: Request, res: Response) => {
-    console.log("passed from here");
-    res.json({ something: "meaningful" });
+    res.status(404).json({ error: "Route not found" });
 });
 
-// Error handling
+// Error Handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
-    res.status(500).send({ errors: [{ message: "Something went wrong" }] });
+    res.status(500).send({
+        errors: [{ message: err.message || "Something went wrong" }]
+    });
 });
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

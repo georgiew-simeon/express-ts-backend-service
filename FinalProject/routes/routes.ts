@@ -1,22 +1,24 @@
-import express, { NextFunction, Request, Response } from "express";
+// routes/routes.ts
+import express from "express";
 import * as betsController from '../controllers/betsController';
+import { validateBody, validateParams } from "../validations/middleware";
+import { betSchema, idSchema } from "../validations/betValidations";
 
 const router = express.Router();
 
-// GET all cities
+// GET all bets
 router.get('/', betsController.getAllBets);
 
-// GET a single city by ID
-router.get('/:id', betsController.getBetById);
+// GET a single bet by ID
+router.get('/:id', validateParams(idSchema, "id"), betsController.getBetById);
 
-// POST a new city
-router.post('/', betsController.createBet);
+// POST a new bet
+router.post('/', validateBody(betSchema), betsController.createBet);
 
-// PUT (update) a city by ID
-router.put('/:id', betsController.updateBet);
+// PUT (update) a bet by ID
+router.put('/:id', validateParams(idSchema, "id"), validateBody(betSchema), betsController.updateBet);
 
-// DELETE a city by ID
-router.delete('/:id', betsController.deleteBet);
-
+// DELETE a bet by ID
+router.delete('/:id', validateParams(idSchema, "id"), betsController.deleteBet);
 
 export default router;

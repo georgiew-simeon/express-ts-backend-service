@@ -8,17 +8,17 @@ const bettingEventsService = new BettingEventsService();
 /**
  * Get all events.
  */
-export const getAllEvents = (req: Request, res: Response): void => {
-    const events = bettingEventsService.getAllEvents();
+export const getAllEvents = async (req: Request, res: Response): Promise<void> => {
+    const events = await bettingEventsService.getAllEvents();
     res.json(events);
 };
 
 /**
  * Get an event by its ID.
  */
-export const getEventById = (req: Request, res: Response): void => {
+export const getEventById = async (req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params.id);
-    const event = bettingEventsService.getEventById(id);
+    const event = await bettingEventsService.getEventById(id);
     if (!event) {
         res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.EVENT_NOT_FOUND);
     } else {
@@ -29,23 +29,23 @@ export const getEventById = (req: Request, res: Response): void => {
 /**
  * Create a new event.
  */
-export const createEvent = (req: Request, res: Response): void => {
+export const createEvent = async (req: Request, res: Response): Promise<void> => {
     const newEvent: Event = req.body;
-    const createdEvent = bettingEventsService.addEvent(newEvent);
+    const createdEvent = await bettingEventsService.addEvent(newEvent);
     res.status(STATUS_CODES.CREATED).json(createdEvent);
 };
 
 /**
  * Update an event by its ID.
  */
-export const updateEvent = (req: Request, res: Response): void => {
+export const updateEvent = async (req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params.id);
     const updatedEvent: Event = req.body;
-    const success = bettingEventsService.updateEvent(id, updatedEvent);
+    const success = await bettingEventsService.updateEvent(id, updatedEvent);
     if (!success) {
         res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.EVENT_NOT_FOUND);
     } else {
-        const updated = bettingEventsService.getEventById(id);
+        const updated = await bettingEventsService.getEventById(id);
         res.json(updated);
     }
 };
@@ -53,9 +53,9 @@ export const updateEvent = (req: Request, res: Response): void => {
 /**
  * Delete an event by its ID.
  */
-export const deleteEvent = (req: Request, res: Response): void => {
+export const deleteEvent = async (req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params.id);
-    const success = bettingEventsService.deleteEvent(id);
+    const success = await bettingEventsService.deleteEvent(id);
     if (!success) {
         res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.EVENT_NOT_FOUND);
     } else {

@@ -1,5 +1,5 @@
-// auth.ts
 import { Request, Response, NextFunction } from "express";
+import { MESSAGES, STATUS_CODES } from "./utils/constants";
 
 // Middleware for Basic Authentication
 const basicAuth = (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +21,7 @@ const basicAuth = (req: Request, res: Response, next: NextFunction) => {
     }
 
     // If no authorization header is present, or credentials do not match
-    return res.status(401).send("Authentication Required");
+    return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.AUTHENTICATION_REQUIRED);
 };
 
 export default basicAuth;

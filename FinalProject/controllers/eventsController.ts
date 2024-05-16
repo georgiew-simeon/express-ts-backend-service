@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Event } from "../models/event";
 import BettingEventsService from "../services/bettingEventsService";
+import { MESSAGES, STATUS_CODES } from "../utils/constants";
 
 const bettingEventsService = new BettingEventsService();
 
@@ -19,7 +20,7 @@ export const getEventById = (req: Request, res: Response): void => {
     const id = parseInt(req.params.id);
     const event = bettingEventsService.getEventById(id);
     if (!event) {
-        res.status(404).send("Event not found");
+        res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.EVENT_NOT_FOUND);
     } else {
         res.json(event);
     }
@@ -31,7 +32,7 @@ export const getEventById = (req: Request, res: Response): void => {
 export const createEvent = (req: Request, res: Response): void => {
     const newEvent: Event = req.body;
     const createdEvent = bettingEventsService.addEvent(newEvent);
-    res.status(201).json(createdEvent);
+    res.status(STATUS_CODES.CREATED).json(createdEvent);
 };
 
 /**
@@ -42,7 +43,7 @@ export const updateEvent = (req: Request, res: Response): void => {
     const updatedEvent: Event = req.body;
     const success = bettingEventsService.updateEvent(id, updatedEvent);
     if (!success) {
-        res.status(404).send("Event not found");
+        res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.EVENT_NOT_FOUND);
     } else {
         const updated = bettingEventsService.getEventById(id);
         res.json(updated);
@@ -56,8 +57,8 @@ export const deleteEvent = (req: Request, res: Response): void => {
     const id = parseInt(req.params.id);
     const success = bettingEventsService.deleteEvent(id);
     if (!success) {
-        res.status(404).send("Event not found");
+        res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.EVENT_NOT_FOUND);
     } else {
-        res.status(204).send("Event deleted successfully");
+        res.status(STATUS_CODES.NO_CONTENT).send();
     }
 };

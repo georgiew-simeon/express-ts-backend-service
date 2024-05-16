@@ -1,6 +1,6 @@
 import express from "express";
 import * as betsController from '../controllers/betsController';
-import { validateBody, validateParams } from "../middlewares/middleware";
+import { validateBody, validateParams } from "../utils/middleware";
 import { betSchema, idSchema } from "../validations/betValidations";
 
 const router = express.Router();

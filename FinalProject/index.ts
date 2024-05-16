@@ -5,7 +5,8 @@ import cors from "cors";
 import basicAuth from "./auth";
 import eventRoutes from "./routes/eventRoutes";
 import betRoutes from "./routes/betRoutes";
-import { logErrors } from "./middlewares/logger";
+import { logErrors } from "./utils/logger";
+import { MESSAGES, STATUS_CODES } from "./utils/constants";
 
 const app = express();
 const PORT = 3000;
@@ -19,19 +20,19 @@ app.use(basicAuth);
 app.use("/events", eventRoutes);
 app.use("/bets", betRoutes);
 app.get('/test', (req: Request, res: Response) => {
-    res.json({ message: 'API works' });
+    res.json({ message: MESSAGES.API_WORKS });
 });
 
 // 404 Handler
 app.use((req: Request, res: Response) => {
-    res.status(404).json({ error: "Route not found" });
+    res.status(STATUS_CODES.NOT_FOUND).json({ error: "Route not found" });
 });
 
 // Error Handling
 app.use(logErrors);
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
-    res.status(500).send({
+    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).send({
         errors: [{ message: err.message || "Something went wrong" }]
     });
 });

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Bet } from "../models/bet";
 import BettingService from "../services/bettingService";
+import { MESSAGES, STATUS_CODES } from "../utils/constants";
 
 const bettingService = new BettingService();
 
@@ -28,7 +29,7 @@ export const getBetById = (req: Request, res: Response): void => {
     const id = parseInt(req.params.id);
     const bet = bettingService.getBetById(id);
     if (!bet) {
-        res.status(404).send("Bet not found");
+        res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.BET_NOT_FOUND);
     } else {
         res.json(bet);
     }
@@ -40,7 +41,7 @@ export const getBetById = (req: Request, res: Response): void => {
 export const createBet = (req: Request, res: Response): void => {
     const newBet: Bet = req.body;
     const createdBet = bettingService.addBet(newBet);
-    res.status(201).json(createdBet);
+    res.status(STATUS_CODES.CREATED).json(createdBet);
 };
 
 /**
@@ -51,7 +52,7 @@ export const updateBet = (req: Request, res: Response): void => {
     const updatedBet: Bet = req.body;
     const success = bettingService.updateBet(id, updatedBet);
     if (!success) {
-        res.status(404).send("Bet not found");
+        res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.BET_NOT_FOUND);
     } else {
         const updated = bettingService.getBetById(id);
         res.json(updated);
@@ -65,8 +66,8 @@ export const deleteBet = (req: Request, res: Response): void => {
     const id = parseInt(req.params.id);
     const success = bettingService.deleteBet(id);
     if (!success) {
-        res.status(404).send("Bet not found");
+        res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.BET_NOT_FOUND);
     } else {
-        res.status(204).send("Bet deleted successfully");
+        res.status(STATUS_CODES.NO_CONTENT).send();
     }
 };

@@ -1,6 +1,6 @@
 import express from "express";
 import * as eventsController from '../controllers/eventsController';
-import { validateBody, validateParams } from "../middlewares/middleware";
+import { validateBody, validateParams } from "../utils/middleware";
 import { eventSchema, idSchema } from "../validations/eventValidations";
 
 const router = express.Router();

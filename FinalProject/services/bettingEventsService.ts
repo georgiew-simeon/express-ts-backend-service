@@ -55,6 +55,11 @@ class BettingEventsService {
         }
         return false;
     }
+
+    async eventExists(id: number): Promise<boolean> {
+        this.events = await readEvents();
+        return this.events.some(event => event.id === id);
+    }
 }
 
 export default BettingEventsService;

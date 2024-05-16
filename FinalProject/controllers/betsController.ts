@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { Bet } from "../models/bet";
 import BettingService from "../services/bettingService";
+import BettingEventsService from "../services/bettingEventsService";
 import { MESSAGES, STATUS_CODES } from "../utils/constants";
 
 const bettingService = new BettingService();
+const bettingEventsService = new BettingEventsService();
 
 /**
  * Get all bets.
@@ -40,6 +42,11 @@ export const getBetById = async (req: Request, res: Response): Promise<void> => 
  */
 export const createBet = async (req: Request, res: Response): Promise<void> => {
     const newBet: Bet = req.body;
+    const eventExists = await bettingEventsService.eventExists(newBet.eventId);
+    if (!eventExists) {
+        res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.EVENT_NOT_FOUND);
+        return;
+    }
     const createdBet = await bettingService.addBet(newBet);
     res.status(STATUS_CODES.CREATED).json(createdBet);
 };

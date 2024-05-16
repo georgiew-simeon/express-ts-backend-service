@@ -1,10 +1,11 @@
-// server.ts
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import bodyParser from "body-parser";
 import cors from "cors";
 import basicAuth from "./auth";
-import betRoutes from "./routes/routes";
+import eventRoutes from "./routes/eventRoutes";
+import betRoutes from "./routes/betRoutes";
+import { logErrors } from "./middlewares/logger";
 
 const app = express();
 const PORT = 3000;
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use(basicAuth);
 
 // Routes
+app.use("/events", eventRoutes);
 app.use("/bets", betRoutes);
 app.get('/test', (req: Request, res: Response) => {
     res.json({ message: 'API works' });
@@ -26,6 +28,7 @@ app.use((req: Request, res: Response) => {
 });
 
 // Error Handling
+app.use(logErrors);
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
     res.status(500).send({

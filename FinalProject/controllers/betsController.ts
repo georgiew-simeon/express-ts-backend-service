@@ -1,15 +1,23 @@
-// controllers/betsController.ts
 import { Request, Response } from "express";
-import { Bets } from "../models/bets";
+import { Bet } from "../models/bet";
 import BettingService from "../services/bettingService";
 
-const betService = new BettingService();
+const bettingService = new BettingService();
 
 /**
  * Get all bets.
  */
 export const getAllBets = (req: Request, res: Response): void => {
-    const bets = betService.getAllBets();
+    const bets = bettingService.getAllBets();
+    res.json(bets);
+};
+
+/**
+ * Get bets by event ID.
+ */
+export const getBetsByEventId = (req: Request, res: Response): void => {
+    const eventId = parseInt(req.params.eventId);
+    const bets = bettingService.getBetsByEventId(eventId);
     res.json(bets);
 };
 
@@ -18,7 +26,7 @@ export const getAllBets = (req: Request, res: Response): void => {
  */
 export const getBetById = (req: Request, res: Response): void => {
     const id = parseInt(req.params.id);
-    const bet = betService.getBetById(id);
+    const bet = bettingService.getBetById(id);
     if (!bet) {
         res.status(404).send("Bet not found");
     } else {
@@ -30,8 +38,8 @@ export const getBetById = (req: Request, res: Response): void => {
  * Create a new bet.
  */
 export const createBet = (req: Request, res: Response): void => {
-    const newBet: Bets = req.body;
-    const createdBet = betService.addBet(newBet);
+    const newBet: Bet = req.body;
+    const createdBet = bettingService.addBet(newBet);
     res.status(201).json(createdBet);
 };
 
@@ -40,12 +48,13 @@ export const createBet = (req: Request, res: Response): void => {
  */
 export const updateBet = (req: Request, res: Response): void => {
     const id = parseInt(req.params.id);
-    const updatedBet: Bets = req.body;
-    const success = betService.updateBet(id, updatedBet);
+    const updatedBet: Bet = req.body;
+    const success = bettingService.updateBet(id, updatedBet);
     if (!success) {
         res.status(404).send("Bet not found");
     } else {
-        res.send("Bet updated successfully");
+        const updated = bettingService.getBetById(id);
+        res.json(updated);
     }
 };
 
@@ -54,10 +63,10 @@ export const updateBet = (req: Request, res: Response): void => {
  */
 export const deleteBet = (req: Request, res: Response): void => {
     const id = parseInt(req.params.id);
-    const success = betService.deleteBet(id);
+    const success = bettingService.deleteBet(id);
     if (!success) {
         res.status(404).send("Bet not found");
     } else {
-        res.send("Bet deleted successfully");
+        res.status(204).send("Bet deleted successfully");
     }
 };

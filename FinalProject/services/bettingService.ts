@@ -1,40 +1,27 @@
-// services/bettingService.ts
-import { Bets } from "../models/bets";
+import { Bet } from "../models/bet";
 
-// Example service class for handling business logic related to bets
 class BettingService {
-    private bets: Bets[];
+    private bets: Bet[];
 
     constructor() {
-        this.bets = [
-            {
-                id: 1,
-                event: "AvsB",
-                contestant: "123-456",
-                date: "2024-15-05T20:00",
-                coefficients: { win: 2, loose: 1 }
-            },
-            {
-                id: 2,
-                event: "CvsD",
-                contestant: "234-567",
-                date: "2024-15-05T20:00",
-                coefficients: { win: 2, loose: 3 }
-            }
-        ];
+        this.bets = [];
     }
 
-    getAllBets(): Bets[] {
+    getAllBets(): Bet[] {
         return this.bets;
     }
 
-    getBetById(id: number): Bets | undefined {
+    getBetsByEventId(eventId: number): Bet[] {
+        return this.bets.filter(bet => bet.eventId === eventId);
+    }
+
+    getBetById(id: number): Bet | undefined {
         return this.bets.find(bet => bet.id === id);
     }
 
-    addBet(bet: Omit<Bets, "id">): Bets {
+    addBet(bet: Omit<Bet, "id">): Bet {
         const nextId = Math.max(0, ...this.bets.map(b => b.id)) + 1;
-        const newBet: Bets = {
+        const newBet: Bet = {
             ...bet,
             id: nextId
         };
@@ -42,7 +29,7 @@ class BettingService {
         return newBet;
     }
 
-    updateBet(id: number, updatedBet: Bets): boolean {
+    updateBet(id: number, updatedBet: Bet): boolean {
         const index = this.bets.findIndex(bet => bet.id === id);
         if (index !== -1) {
             this.bets[index] = {

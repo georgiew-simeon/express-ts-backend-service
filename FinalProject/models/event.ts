@@ -1,11 +1,10 @@
-// models/bets.ts
-export interface Bets {
+export interface Event {
   id: number;
   event: string;
   contestant: string;
   date: string;
   coefficients: {
-    win: number;
-    loose: number;
+      win: number;
+      lose: number;
   };
 }

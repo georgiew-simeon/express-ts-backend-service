@@ -1,13 +1,15 @@
-// routes/routes.ts
 import express from "express";
 import * as betsController from '../controllers/betsController';
-import { validateBody, validateParams } from "../validations/middleware";
+import { validateBody, validateParams } from "../middlewares/middleware";
 import { betSchema, idSchema } from "../validations/betValidations";
 
 const router = express.Router();
 
 // GET all bets
 router.get('/', betsController.getAllBets);
+
+// GET bets by event ID
+router.get('/event/:eventId', validateParams(idSchema, "eventId"), betsController.getBetsByEventId);
 
 // GET a single bet by ID
 router.get('/:id', validateParams(idSchema, "id"), betsController.getBetById);

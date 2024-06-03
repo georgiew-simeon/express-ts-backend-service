@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "event": "Ivo vs Timmy",
+    "contestant": "123-456",
+    "date": "2024-05-15T20:00",
+    "coefficients": {
+      "win": 2,
+      "lose": 1
+    },
+    "id": 1
+  },
+  {
+    "event": "Simo vs Nino",
+    "contestant": "123-456",
+    "date": "2024-05-15T20:00",
+    "coefficients": {
+      "win": 2,
+      "lose": 1
+    },
+    "id": 2
+  }
+]
